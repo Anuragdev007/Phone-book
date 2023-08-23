@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="Layout(content)">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${title}">Base Page</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/style.css}"  />
+  </head>
+  <body>
+	  <!---NAvbar---->
+	  <nav class="navbar fixed-top navbar-expand-lg bg-body-tertiary bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">ContactBook</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto text-uppercase">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" th:href="@{/user/success}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" th:href="@{/user/success}">Dashboard</a>
+        </li>
+        
+         
+        <li class="nav-item">
+          <a class="nav-link" ><span th:text="${person.name}"></span></a>
+        </li>
+         <li class="nav-item">
+          <a class="nav-link" th:href="@{/logout}">Logout</a>
+        </li>
+       
+      </ul>
+    </div>
+  </div>
+</nav>
+<!---Navbar-->
+
+
+<div class="sidebar mt-2">
+	<span onclick="toggleSidebar()" class="closebtn">&times;</span>
+	<a id="home-link" th:href="@{/user/success}" class="item active"> <i class="fa-solid fa-house"></i> Home</a>
+	<a id="contact-link" th:href="@{/user/show-contact/0}" class="item"> <i class="fa-solid fa-address-book"></i> View Contacts</a>
+	<a id="add-link" th:href="@{/user/add-contact}" class="item"><i class="fa-solid fa-plus"></i> Add Contact</a>
+	<a id="profile-link" href=""  th:href="@{/user/profile}" class="item"><i class="fa-solid fa-user"></i> Your Profile</a>
+	<a id="setting-link" href="" class="item"><i class="fa-solid fa-gear"></i> Setting</a>
+	<a id="logout-link" th:href="@{/logout}" class="item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+	<div class="divider"></div>
+</div>
+	
+</div>
+
+<div class="content mt-5">
+	<i onclick="toggleSidebar()" class="fas fa-bars m-3" style="cursor: pointer;"></i>
+	<div th:if="${session.message}" class="container">
+		<div th:classappend="${'alert-'+session.message.type}" class="alert  text-center" role="alert">
+			<span th:text="${session.message.content}"></span>
+
+		</div>
+		
+		<th:block th:text="${@sessionHelper.removeMessageFromHandler()}"></th:block>
+	
+	</div>
+	
+	  <div th:replace="${content}"></div>
+	
+</div>
+	  
+ 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <script>
+		
+		function deleteContact(cid){
+			Swal.fire({
+  title: 'Are you sure?',
+  text: "You won't be able to revert this!",
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Yes, delete it!'
+}).then((result) => {
+  if (result.isConfirmed) {
+    Swal.fire(
+     window.location="/user/delete/"+cid
+    )
+  }else{
+	  swal("Your contact is safe !!!");
+  }
+})
+		}
+	</script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script th:src="@{/js/script.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+  </body>
+</html>
